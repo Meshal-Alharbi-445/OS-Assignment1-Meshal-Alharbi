@@ -11,7 +11,8 @@ Answer all 4 questions with detailed explanations. Each answer should be **3-5 s
 
 **Your Answer:**
 
-[Write your answer here. Consider: What is a process? What is a thread? How do they differ in terms of memory, resources, creation overhead? Why are threads more suitable for this simulation?]
+[A process is an independent program execution that has its own memory space and resources, whereas a thread is a lightweight unit of execution within a process that shares memory with other threads. In this assignment, we used threads because they are much more efficient to create and switch between compared to full processes. Threads allow our simulation to run multiple "tasks" (P1, P2, etc.) simultaneously within the same memory heap, making it easier to manage shared data like the Ready Queue and contextSwitchCount. This setup perfectly mimics how a real CPU handles multiple tasks within a single operating system environment. 
+]
 
 ---
 
@@ -21,15 +22,16 @@ Answer all 4 questions with detailed explanations. Each answer should be **3-5 s
 
 **Your Answer:**
 
-[Write your answer here. Describe the specific behavior - where does the process go? When does it run again? Give an example from your actual program output showing a process that was re-queued.]
+[When a process does not finish within its assigned time quantum, the scheduler interrupts it, saves its current state, and moves it to the back of the Ready Queue. This ensures that no single process monopolizes the CPU, providing fairness to all other waiting tasks. Once the process reaches the front of the queue again, it resumes execution from where it left off. In my program, when a process like "P1" exceeds the 500ms quantum, it is re-enqueued, and the next process in line starts its execution.]
 
 Example from my output:
 ```
-[Paste a relevant snippet from your program output here showing a process being re-queued]
+[P1] is running...
+[P1] Time Quantum expired. Re-enquing P1...
 ```
 
 **Explanation of example:**
-[Explain what's happening in the output snippet you pasted]
+[This snippet shows that P1 had a remaining burst time larger than the quantum, so the scheduler stopped it and put it at the end of the queue to give other processes a chance.]
 
 ---
 
@@ -39,17 +41,23 @@ Example from my output:
 
 **Your Answer:**
 
-[Write your answer here. For each state, explain when P1 enters that state during the simulation. Use your understanding of the code to trace through the lifecycle.]
+[
+• New: P1 is in the New state when the Process object is first instantiated in the code but before the start() method is called.
+• Runnable: P1 becomes Runnable after start() is called and it is added to the readyQueue, waiting for the scheduler to pick it.
+• Running: P1 is in the Running state when the scheduler calls its run() method and the CPU is actively executing its instructions.
+• Waiting: P1 enters the Waiting (or Blocked) state if it is interrupted by a context switch or if it has to wait for an I/O operation before it can continue.
+• Terminated: P1 reaches the Terminated state once its remainingBurstTime reaches zero and it is removed from the execution loop.
+]
 
-1. **New**: [When is P1 in New state?]
+1. **New**: [P1 is in the New state when the Process object is first instantiated in the code but before the start() method is called.]
 
-2. **Runnable**: [When does P1 become Runnable?]
+2. **Runnable**: [P1 becomes Runnable after start() is called and it is added to the readyQueue, waiting for the scheduler to pick it.]
 
-3. **Running**: [When is P1 Running?]
+3. **Running**: [P1 is in the Running state when the scheduler calls its run() method and the CPU is actively executing its instructions.]
 
-4. **Waiting**: [When/why would P1 be Waiting?]
+4. **Waiting**: [ P1 enters the Waiting (or Blocked) state if it is interrupted by a context switch or if it has to wait for an I/O operation before it can continue.]
 
-5. **Terminated**: [When is P1 Terminated?]
+5. **Terminated**: [P1 reaches the Terminated state once its remainingBurstTime reaches zero and it is removed from the execution loop.]
 
 ---
 
