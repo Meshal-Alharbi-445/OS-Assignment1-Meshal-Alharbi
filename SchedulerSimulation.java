@@ -149,6 +149,7 @@ public boolean isFinished() {
 }
 
 public class SchedulerSimulation {
+    static int contextSwitchCount = 0;  
     public static void main(String[] args) {
         // ⚠️ IMPORTANT: Put your student ID here to seed the random number generator
         // This makes your output unique to you - DO NOT forget to change this!
@@ -225,6 +226,9 @@ for (int i = 1; i <= numProcesses; i++) {
         
         // Loop to manage the scheduling of processes
         while (!processQueue.isEmpty()) {
+
+            contextSwitchCount++; // Increment context switch count for each process execution
+
             // Get the next thread from the queue (FIFO)
             Thread currentThread = processQueue.poll(); // Dequeues the next thread
             
@@ -284,6 +288,9 @@ for (int i = 1; i <= numProcesses; i++) {
         System.out.println(Colors.BOLD + Colors.BRIGHT_GREEN + 
                           "╚════════════════════════════════════════════════════════════════════════════════╝" + 
                           Colors.RESET + "\n");
+                          
+        // Print total context switches that occurred during the simulation
+        System.out.println(Colors.BOLD + Colors.BRIGHT_YELLOW + "Total Context Switches: " + contextSwitchCount + Colors.RESET + "\n");
     }
     
     // Method to add a process to the queue and map, while printing a "ready" message
@@ -298,7 +305,7 @@ for (int i = 1; i <= numProcesses; i++) {
         // Map the thread to the process, so we can track the process associated with each thread
         processMap.put(thread, process);
         
-        // Print a message indicating the process has entered the ready queue
+        // Print a message indicating the process has entered the ready queue 
         System.out.println(Colors.BLUE + "  ➕ " + Colors.BOLD + Colors.CYAN + process.getName() + 
                           Colors.RESET + Colors.BLUE + " added to ready queue" + Colors.RESET + 
                           " │ Burst time: " + Colors.YELLOW + process.getBurstTime() + "ms" + 
